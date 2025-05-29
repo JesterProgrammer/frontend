@@ -1,0 +1,32 @@
+/* New CSS file for Telegram WebApp styles */
+
+@font-face {
+  font-family: 'Coco Gothic';
+  src: rl("https://db.onlinewebfonts.com/t/a6a13abd0fbd3c888f758e0655ca8bce.woff2")format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-coco {
+  font-family: 'Coco Gothic', sans-serif;
+}
+
+/* Telegram WebApp specific styles */
+body.telegram-webapp {
+  background-color: var(--tg-theme-bg-color, #ffffff);
+  color: var(--tg-theme-text-color, #000000);
+}
+
+.tg-button {
+  background-color: var(--tg-theme-button-color, #2481cc);
+  color: var(--tg-theme-button-text-color, #ffffff);
+}
+
+.tg-link {
+  color: var(--tg-theme-link-color, #2481cc);
+}
+
+.tg-secondary-bg {
+  background-color: var(--tg-theme-secondary-bg-color, #f0f0f0);
+}
