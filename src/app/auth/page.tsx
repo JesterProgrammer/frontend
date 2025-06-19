@@ -1,9 +1,18 @@
 "use client"
 
+import axios from "axios"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 
-const API_URL = "http://localhost:3001"
+const API_URL = "https://api.jesterstudio.ru"
+
+type ApiError = {
+  response?: {
+    data?: {
+      error?: string
+    }
+  }
+}
 
 export default function Auth() {
   const [token, setToken] = useState("")
@@ -15,25 +24,30 @@ export default function Auth() {
     setError("")
 
     try {
-      console.log("Отправка запроса на:", `${API_URL}/api/auth/verify`)
-      const response = await fetch(`${API_URL}/api/auth/verify`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await axios.post(`${API_URL}/api/auth/verify`,
+        { 
+          'token': token
         },
-        credentials: "include",
-        body: JSON.stringify({ token }),
-      })
-
-      if (response.ok) {
-        router.push("/")
+        {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          withCredentials: true
+        }
+      )
+      console.log(response.data)
+      console.log('Cookies:', document.cookie)
+      
+      if (response.data.success == true) {
+        setTimeout(() => {
+          router.push("/")
+          router.refresh()
+        }, 100)
       } else {
-        const data = await response.json()
-        setError(data.error || "Неверный токен")
+        setError(response.data.error || "Неверный токен")
       }
     } catch (err) {
-      console.error("Ошибка при отправке запроса:", err)
-      setError("Произошла ошибка при проверке токена")
+      setError((err as ApiError)?.response?.data?.error || "Ошибка при проверке токена")
     }
   }
 
